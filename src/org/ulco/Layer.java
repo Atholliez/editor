@@ -3,6 +3,8 @@ package org.ulco;
 import java.util.Vector;
 
 public class Layer {
+    private Vector<GraphicsObject> m_list;
+    private int m_ID;
     public Layer() {
         m_list = new Vector<GraphicsObject>();
         m_ID = ++ID.ID;
@@ -13,6 +15,11 @@ public class Layer {
         String str = json.replaceAll("\\s+","");
         int objectsIndex = str.indexOf("objects");
         int endIndex = str.lastIndexOf("}");
+
+        if(str.contains("groups")){
+            int groupsIndex = str.indexOf("groups");
+            parseObjects(str.substring(groupsIndex + 8, endIndex - 1));
+        }
 
         parseObjects(str.substring(objectsIndex + 9, endIndex - 1));
     }
@@ -101,7 +108,4 @@ public class Layer {
         }
         return str + " } }";
     }
-
-    private Vector<GraphicsObject> m_list;
-    private int m_ID;
 }
